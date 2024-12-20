@@ -1,3 +1,6 @@
+#ifndef MYCLASS_HPP
+#define MYCLASS_HPP
+
 /**
  * @brief A simple demonstration class
  */
@@ -12,5 +15,6 @@ public:
     void doSomething();
 
 private:
-    int m_value; ///< Internal value
-}; 
+    int m_value{0};  ///< Internal value
+};
+#endif

@@ -1,7 +1,7 @@
 #include "MyClass.hpp"
 
-MyClass::MyClass() : m_value(0) {}
+MyClass::MyClass() {}
 
 void MyClass::doSomething() {
     m_value++;
-} 
+}

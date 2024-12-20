@@ -19,3 +19,7 @@ Running Tests
 To run tests::
 
     cmake --build build --target test 
+
+Format code::
+
+    cmake --build build --target format
