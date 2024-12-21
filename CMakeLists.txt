@@ -51,4 +51,63 @@ target_link_libraries(unit_tests PRIVATE
 target_compile_definitions(unit_tests PRIVATE USE_MPI)
 
 include(GoogleTest)
-gtest_discover_tests(unit_tests) 
+gtest_discover_tests(unit_tests)
+
+# After basic settings
+# Code quality tools
+find_package(ClangTidy)
+find_program(CLANG_FORMAT "clang-format" 
+    PATHS
+        "C:/msys64/mingw64/bin"
+)
+
+# Clang Format
+if(CLANG_FORMAT)
+    add_custom_target(format
+        COMMAND ${CLANG_FORMAT} -i ${ALL_SOURCE_FILES}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Formatting source code..."
+    )
+endif()
+
+# Clang Tidy
+if(ClangTidy_FOUND)
+    set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXECUTABLE})
+    
+    add_custom_target(lint
+        COMMAND ${CLANG_TIDY_EXECUTABLE}
+        ${CMAKE_SOURCE_DIR}/src/*.cpp
+        ${CMAKE_SOURCE_DIR}/include/*.hpp
+        --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy
+        --checks=*
+        -p=${CMAKE_BINARY_DIR}
+        --header-filter=.*
+        --
+        -I${CMAKE_SOURCE_DIR}/include
+        -IC:/msys64/mingw64/include/c++/14.2.0
+        -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32
+        -IC:/msys64/mingw64/include/c++/14.2.0/backward
+        -IC:/msys64/mingw64/include
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running clang-tidy..."
+    )
+
+    add_custom_target(fix
+        COMMAND ${CLANG_TIDY_EXECUTABLE}
+        ${CMAKE_SOURCE_DIR}/src/*.cpp
+        ${CMAKE_SOURCE_DIR}/include/*.hpp
+        --config-file=${CMAKE_SOURCE_DIR}/.clang-tidy
+        --checks=*
+        -p=${CMAKE_BINARY_DIR}
+        --header-filter=.*
+        --fix
+        --
+        -I${CMAKE_SOURCE_DIR}/include
+        -IC:/msys64/mingw64/include/c++/14.2.0
+        -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32
+        -IC:/msys64/mingw64/include/c++/14.2.0/backward
+        -IC:/msys64/mingw64/include
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running clang-tidy with fixes..."
+    )
+endif() 
