@@ -3,10 +3,6 @@ find_program(CLANG_TIDY_EXECUTABLE
     NAMES 
         clang-tidy
         "clang-tidy.exe"
-    PATHS
-        "C:/Program Files/LLVM/bin"
-        "C:/LLVM/bin"
-        "C:/msys64/mingw64/bin"
     DOC "Path to clang-tidy executable"
     REQUIRED
 )

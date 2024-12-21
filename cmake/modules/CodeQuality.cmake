@@ -1,9 +1,7 @@
 function(add_code_quality_targets)
     # Find tools
     find_package(ClangTidy)
-    find_program(CLANG_FORMAT "clang-format" 
-        PATHS "C:/msys64/mingw64/bin"
-    )
+    find_program(CLANG_FORMAT "clang-format" REQUIRED)
 
     # Collect source files
     file(GLOB_RECURSE ALL_SOURCE_FILES 
@@ -36,10 +34,6 @@ function(add_code_quality_targets)
             --header-filter=.*
             --
             -I${PROJECT_SOURCE_DIR}/include
-            -IC:/msys64/mingw64/include/c++/14.2.0
-            -IC:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32
-            -IC:/msys64/mingw64/include/c++/14.2.0/backward
-            -IC:/msys64/mingw64/include
         )
 
         add_custom_target(lint
