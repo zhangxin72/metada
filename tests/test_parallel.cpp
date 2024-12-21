@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <mpi.h>
+
 #include <vector>
+
 #include "ParallelBase.hpp"
 
 namespace {
@@ -24,7 +26,7 @@ private:
     auto gather_and_verify() -> void {
         std::vector<double> result;
         parallel_.gather(result);
-        
+
         if (rank_ == 0) {
             ASSERT_EQ(result.size(), DATA_SIZE);
             for (int i = 0; i < DATA_SIZE; ++i) {
@@ -61,7 +63,7 @@ TEST_F(ParallelTest, InvalidDataSize) {
     test_invalid_data_size();
 }
 
-} // namespace
+}  // namespace
 
 auto main(int argc, char** argv) -> int {
     MPI_Init(&argc, &argv);
@@ -69,4 +71,4 @@ auto main(int argc, char** argv) -> int {
     const int result = RUN_ALL_TESTS();
     MPI_Finalize();
     return result;
-} 
+}
