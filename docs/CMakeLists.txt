@@ -1,3 +1,12 @@
+if(BUILD_DOCS)
+    # Doxygen is required
+    find_package(Doxygen REQUIRED)
+    
+    # Sphinx is optional
+    find_package(Sphinx)
+    option(BUILD_SPHINX "Build Sphinx documentation" ${Sphinx_FOUND})
+endif()
+
 if(DOXYGEN_FOUND)
     # Set Doxygen input and output paths
     set(DOXYGEN_INPUT_DIR ${CMAKE_SOURCE_DIR})
