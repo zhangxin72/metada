@@ -4,7 +4,10 @@ Checks: '-*,
   readability-*,
   bugprone-*,
   cppcoreguidelines-*,
-  clang-analyzer-*
+  clang-analyzer-*,
+  -llvm-*,
+  -llvmlibc-*,
+  -zircon-*
   '
 WarningsAsErrors: ''
 HeaderFilterRegex: '.*'

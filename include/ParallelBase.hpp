@@ -2,6 +2,7 @@
 #define PARALLEL_BASE_HPP
 
 #include <mpi.h>
+
 #include <vector>
 
 class ParallelBase {
@@ -12,9 +13,15 @@ public:
     virtual void distribute(const std::vector<double>& global_data);
     virtual void gather(std::vector<double>& global_result);
 
-    auto getRank() const -> int { return m_rank; }
-    auto getSize() const -> int { return m_size; }
-    auto getComm() const -> MPI_Comm { return m_comm; }
+    auto getRank() const -> int {
+        return m_rank;
+    }
+    auto getSize() const -> int {
+        return m_size;
+    }
+    auto getComm() const -> MPI_Comm {
+        return m_comm;
+    }
 
 private:
     MPI_Comm m_comm;
@@ -23,4 +30,4 @@ private:
     std::vector<double> m_local_data;
 };
 
-#endif 
+#endif

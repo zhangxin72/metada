@@ -18,7 +18,8 @@ file(GLOB_RECURSE ALL_SOURCE_FILES
 # Main target
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    ${CMAKE_SOURCE_DIR}/include
+    ${MPI_CXX_INCLUDE_PATH}
 )
 
 # Compiler warnings
