@@ -36,8 +36,6 @@ find_package(ClangTidy)
 # Clang Format
 find_program(CLANG_FORMAT "clang-format" 
     PATHS
-        "C:/Program Files/LLVM/bin"
-        "C:/LLVM/bin"
         "C:/msys64/mingw64/bin"
 )
 
@@ -125,4 +123,11 @@ if(SPHINX_FOUND)
     )
 
     add_custom_target(docs ALL DEPENDS ${SPHINX_INDEX_FILE})
-endif() 
+endif()
+
+# Add after cmake_minimum_required
+find_package(MPI REQUIRED)
+
+# Update the target settings
+target_link_libraries(${PROJECT_NAME} PRIVATE MPI::MPI_CXX)
+target_compile_definitions(${PROJECT_NAME} PRIVATE USE_MPI) 
