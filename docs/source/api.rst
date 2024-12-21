@@ -2,7 +2,7 @@ API Documentation
 =================
 
 Class Documentation
------------------
+-------------------
 
 .. doxygenclass:: ParallelBase
    :project: metada
@@ -11,7 +11,7 @@ Class Documentation
    :private-members:
 
 MPI Parallel Processing
-----------------------
+-----------------------
 
 The ParallelBase class provides basic MPI parallel processing capabilities:
 
