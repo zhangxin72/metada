@@ -1,4 +1,4 @@
-find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
+find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format REQUIRED)
 
 function(add_clang_format TARGET_NAME)
     if(CLANG_FORMAT_EXECUTABLE)

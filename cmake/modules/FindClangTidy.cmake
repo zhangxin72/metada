@@ -8,6 +8,7 @@ find_program(CLANG_TIDY_EXECUTABLE
         "C:/LLVM/bin"
         "C:/msys64/mingw64/bin"
     DOC "Path to clang-tidy executable"
+    REQUIRED
 )
 
 # Handle REQUIRED and QUIET arguments

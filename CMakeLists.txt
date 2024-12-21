@@ -4,6 +4,10 @@ project(metada VERSION 1.0)
 # Set module path
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
 
+# Include required modules
+include(PrintSummary)
+include(CodeQuality)
+
 # Build options
 option(BUILD_DOCS "Build documentation" OFF)
 option(BUILD_TESTS "Build tests" OFF)
@@ -25,7 +29,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Add code quality targets
-include(CodeQuality)
 add_code_quality_targets()
 
 # Add subdirectories
@@ -38,4 +41,7 @@ endif()
 
 if(BUILD_DOCS)
     add_subdirectory(docs)
-endif() 
+endif()
+
+# Add at the very end of the file
+print_build_summary() 
