@@ -1,5 +1,5 @@
-#include <mpi.h>
 #include <glog/logging.h>
+#include <mpi.h>
 
 #include <iostream>
 #include <vector>
@@ -8,12 +8,12 @@
 
 auto main(int argc, char* argv[]) -> int {
     // Initialize Google's logging library
-   google::InitGoogleLogging(argv[0]);
-   
-   // Log to stderr instead of files
-   FLAGS_logtostderr = true;
-   // Optional: Also log to files in addition to stderr
-   // FLAGS_alsologtostderr = true;
+    google::InitGoogleLogging(argv[0]);
+
+    // Log to stderr instead of files
+    FLAGS_logtostderr = true;
+    // Optional: Also log to files in addition to stderr
+    // FLAGS_alsologtostderr = true;
 
     MPI_Init(&argc, &argv);
 

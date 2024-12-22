@@ -1,20 +1,9 @@
 if(BUILD_DOCS)
     # Doxygen is required
     find_package(Doxygen REQUIRED)
-    register_package(
-        NAME "Doxygen"
-        FOUND_VAR DOXYGEN_FOUND
-        BUILD_OPT BUILD_DOCS
-    )
     
     # Sphinx is optional
     find_package(Sphinx)
-    register_package(
-        NAME "Sphinx"
-        FOUND_VAR Sphinx_FOUND
-        BUILD_OPT BUILD_DOCS
-    )
-    
     option(BUILD_SPHINX "Build Sphinx documentation" ${Sphinx_FOUND})
 endif()
 

@@ -13,13 +13,13 @@ public:
     virtual void distribute(const std::vector<double>& global_data);
     virtual void gather(std::vector<double>& global_result);
 
-    auto getRank() const -> int {
+    [[nodiscard]] auto getRank() const -> int {
         return m_rank;
     }
-    auto getSize() const -> int {
+    [[nodiscard]] auto getSize() const -> int {
         return m_size;
     }
-    auto getComm() const -> MPI_Comm {
+    [[nodiscard]] auto getComm() const -> MPI_Comm {
         return m_comm;
     }
 

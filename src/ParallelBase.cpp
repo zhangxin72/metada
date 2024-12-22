@@ -8,7 +8,7 @@ ParallelBase::ParallelBase(MPI_Comm comm) : m_comm(comm) {
 }
 
 void ParallelBase::distribute(const std::vector<double>& global_data) {
-    int global_size;
+    int global_size = 0;
     if (m_rank == 0) {
         global_size = global_data.size();
     }

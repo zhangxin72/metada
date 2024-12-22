@@ -29,7 +29,6 @@ function(add_code_quality_targets)
             ${PROJECT_SOURCE_DIR}/include/*.hpp
             ${PROJECT_SOURCE_DIR}/tests/*.cpp
             --config-file=${PROJECT_SOURCE_DIR}/.clang-tidy
-            --checks=*
             -p=${CMAKE_BINARY_DIR}
             --header-filter=.*
             --
