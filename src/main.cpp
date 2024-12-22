@@ -1,4 +1,5 @@
 #include <mpi.h>
+#include <glog/logging.h>
 
 #include <iostream>
 #include <vector>
@@ -6,6 +7,14 @@
 #include "ParallelBase.hpp"
 
 auto main(int argc, char* argv[]) -> int {
+    // Initialize Google's logging library
+   google::InitGoogleLogging(argv[0]);
+   
+   // Log to stderr instead of files
+   FLAGS_logtostderr = true;
+   // Optional: Also log to files in addition to stderr
+   // FLAGS_alsologtostderr = true;
+
     MPI_Init(&argc, &argv);
 
     ParallelBase parallel;
@@ -31,14 +40,16 @@ auto main(int argc, char* argv[]) -> int {
         parallel.gather(result);
 
         if (rank == 0) {
-            std::cout << "Result: ";
+            LOG(INFO) << "Result: ";
+            std::ostringstream oss;
             for (const auto& val : result) {
-                std::cout << val << " ";
+                oss << val << " ";
             }
-            std::cout << '\n';
+            LOG(INFO) << oss.str();
+            LOG(INFO) << '\n';
         }
     } catch (const std::exception& e) {
-        std::cerr << "Error on rank " << rank << ": " << e.what() << '\n';
+        LOG(ERROR) << "Error on rank " << rank << ": " << e.what() << '\n';
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
 

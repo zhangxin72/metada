@@ -8,6 +8,7 @@ target_include_directories(metada_lib PUBLIC
 
 target_link_libraries(metada_lib PUBLIC
     MPI::MPI_CXX
+    glog::glog
 )
 
 add_executable(${PROJECT_NAME}

@@ -21,6 +21,8 @@ register_package(
     REQUIRED TRUE
 )
 
+find_package(Glog REQUIRED)
+
 # Optional packages based on build options
 if(BUILD_TESTS)
     find_package(GTest REQUIRED)

@@ -7,7 +7,7 @@ A C++ project using CMake build system with comprehensive documentation support 
 ### Required Tools
 - MSYS2 with MinGW-w64 (GCC 14.2.0)
   - Install from: https://www.msys2.org/
-  - Run: `pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-make`
+  - Run: `pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-make mingw-w64-x86_64-glog`
 - CMake (version 3.15 or higher)
 - Git
 - Visual Studio Code with extensions:

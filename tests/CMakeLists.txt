@@ -7,6 +7,7 @@ target_link_libraries(unit_tests PRIVATE
     GTest::GTest
     GTest::Main
     MPI::MPI_CXX
+    glog::glog
 )
 
 target_compile_definitions(unit_tests PRIVATE USE_MPI)
