@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.15)
-project(metada VERSION 1.0)
+project(metada VERSION 1.0 LANGUAGES CXX Fortran)
 
 # Set module path
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
 
 # Include required modules
+include(PackageRegistry)
 include(PrintSummary)
 include(CodeQuality)
 
@@ -14,10 +15,20 @@ option(BUILD_TESTS "Build tests" OFF)
 
 # Find required packages
 find_package(MPI REQUIRED)
+register_package(
+    NAME "MPI"
+    FOUND_VAR MPI_CXX_FOUND
+    REQUIRED TRUE
+)
 
 # Optional packages based on build options
 if(BUILD_TESTS)
     find_package(GTest REQUIRED)
+    register_package(
+        NAME "GTest"
+        FOUND_VAR GTest_FOUND
+        BUILD_OPT BUILD_TESTS
+    )
     include(CTest)
     enable_testing()
 endif()

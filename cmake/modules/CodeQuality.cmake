@@ -1,7 +1,7 @@
 function(add_code_quality_targets)
-    # Find tools
+    # Find and register tools first
     find_package(ClangTidy)
-    find_program(CLANG_FORMAT "clang-format" REQUIRED)
+    find_package(ClangFormat)
 
     # Collect source files
     file(GLOB_RECURSE ALL_SOURCE_FILES 
@@ -11,16 +11,16 @@ function(add_code_quality_targets)
     )
 
     # Add format target
-    if(CLANG_FORMAT)
+    if(CLANG_FORMAT_EXECUTABLE)
         add_custom_target(format
-            COMMAND ${CLANG_FORMAT} -i ${ALL_SOURCE_FILES}
+            COMMAND ${CLANG_FORMAT_EXECUTABLE} -i ${ALL_SOURCE_FILES}
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
             COMMENT "Formatting source code..."
         )
     endif()
 
     # Add lint and fix targets
-    if(ClangTidy_FOUND)
+    if(CLANG_TIDY_EXECUTABLE)
         set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXECUTABLE})
         
         set(CLANG_TIDY_COMMAND

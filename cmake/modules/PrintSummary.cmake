@@ -1,5 +1,5 @@
 function(print_build_summary)
-    # Helper function to format yes/no
+    # Helper functions
     function(format_yes_no VAR)
         if(${VAR})
             set(${VAR} "YES" PARENT_SCOPE)
@@ -8,7 +8,6 @@ function(print_build_summary)
         endif()
     endfunction()
 
-    # Helper function to format enabled/disabled
     function(format_enabled_disabled VAR)
         if(${VAR})
             set(${VAR} "Enabled" PARENT_SCOPE)
@@ -17,32 +16,54 @@ function(print_build_summary)
         endif()
     endfunction()
 
-    # Format boolean values
-    format_yes_no(MPI_CXX_FOUND)
-    format_yes_no(GTest_FOUND)
-    format_yes_no(DOXYGEN_FOUND)
-    format_yes_no(Sphinx_FOUND)
+    # Function to print package status
+    function(print_package_status PKG)
+        if(NOT PKG)
+            return()
+        endif()
+        
+        string(REPLACE ";" " " PKG_LIST "${PKG}")
+        list(LENGTH PKG_LIST LIST_LENGTH)
+        if(LIST_LENGTH LESS 4)
+            return()
+        endif()
+        
+        list(GET PKG_LIST 0 PKG_NAME)
+        list(GET PKG_LIST 1 FOUND_VAR)
+        list(GET PKG_LIST 3 BUILD_OPT)
+        
+        format_yes_no(${FOUND_VAR})
+        if(NOT ${BUILD_OPT} STREQUAL "NO_BUILD")
+            format_enabled_disabled(${BUILD_OPT})
+            message(STATUS "│   ${PKG_NAME}:       Found: ${${FOUND_VAR}}  Build: ${${BUILD_OPT}}")
+        else()
+            message(STATUS "│   ${PKG_NAME}:       Found: ${${FOUND_VAR}}")
+        endif()
+    endfunction()
+
+    # Get registered packages
+    get_property(REQUIRED_PACKAGES GLOBAL PROPERTY REQUIRED_PACKAGES)
+    get_property(OPTIONAL_PACKAGES GLOBAL PROPERTY OPTIONAL_PACKAGES)
+
+    # Get language info
+    get_property(ENABLED_LANGUAGES GLOBAL PROPERTY ENABLED_LANGUAGES)
     
-    # Handle ClangTidy status
-    if(CLANG_TIDY_EXECUTABLE)
-        set(CLANG_TIDY_STATUS "YES")
-    else()
-        set(CLANG_TIDY_STATUS "NO")
-    endif()
+    # Function to print language settings
+    function(print_language_settings LANG)
+        if(CMAKE_${LANG}_COMPILER)
+            message(STATUS "│   ${LANG} Compiler: ${CMAKE_${LANG}_COMPILER}")
+            message(STATUS "│   ${LANG} Standard: ${CMAKE_${LANG}_STANDARD}")
+            
+            if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+                set(LANG_FLAGS "${CMAKE_${LANG}_FLAGS} ${CMAKE_${LANG}_FLAGS_DEBUG}")
+            else()
+                set(LANG_FLAGS "${CMAKE_${LANG}_FLAGS} ${CMAKE_${LANG}_FLAGS_RELEASE}")
+            endif()
+            message(STATUS "│   ${LANG} Flags: ${LANG_FLAGS}")
+        endif()
+    endfunction()
 
-    # Handle ClangFormat status
-    if(CLANG_FORMAT)
-        set(FORMAT_STATUS "YES")
-    else()
-        set(FORMAT_STATUS "NO")
-    endif()
-
-    format_enabled_disabled(BUILD_TESTS)
-    format_enabled_disabled(BUILD_DOCS)
-    if(BUILD_DOCS)
-        format_enabled_disabled(BUILD_SPHINX)
-    endif()
-
+    # Print header
     message(STATUS "\n")
     message(STATUS "┌──────────────────────────────────────────────────┐")
     message(STATUS "│               Build Summary                      │")
@@ -60,28 +81,23 @@ function(print_build_summary)
 
     # Compiler info
     message(STATUS "│ Compiler Configuration:")
-    message(STATUS "│   C++ Compiler: ${CMAKE_CXX_COMPILER}")
-    message(STATUS "│   C++ Standard: ${CMAKE_CXX_STANDARD}")
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        set(COMPILER_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG}")
-    else()
-        set(COMPILER_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE}")
-    endif()
-    message(STATUS "│   Flags: ${COMPILER_FLAGS}")
-    message(STATUS "├───�������──────────────────────────────────────────────┤")
-
-    # Required packages
-    message(STATUS "│ Required Packages:")
-    message(STATUS "│   MPI:         Found: ${MPI_CXX_FOUND}")
-    message(STATUS "│   ClangTidy:   Found: ${CLANG_TIDY_STATUS}")
-    message(STATUS "│   ClangFormat: Found: ${FORMAT_STATUS}")
+    foreach(LANG ${ENABLED_LANGUAGES})
+        print_language_settings(${LANG})
+    endforeach()
     message(STATUS "├──────────────────────────────────────────────────┤")
 
-    # Optional packages
+    # Print required packages
+    message(STATUS "│ Required Packages:")
+    foreach(PKG IN LISTS REQUIRED_PACKAGES)
+        print_package_status("${PKG}")
+    endforeach()
+    message(STATUS "├──────────────────────────────────────────────────┤")
+
+    # Print optional packages
     message(STATUS "│ Optional Packages:")
-    message(STATUS "│   GTest:       Found: ${GTest_FOUND}  Build: ${BUILD_TESTS}")
-    message(STATUS "│   Doxygen:     Found: ${DOXYGEN_FOUND}  Build: ${BUILD_DOCS}")
-    message(STATUS "│   Sphinx:      Found: ${Sphinx_FOUND}  Build: ${BUILD_DOCS}")
+    foreach(PKG IN LISTS OPTIONAL_PACKAGES)
+        print_package_status("${PKG}")
+    endforeach()
     message(STATUS "├──────────────────────────────────────────────────┤")
 
     # Build options
