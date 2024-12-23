@@ -15,35 +15,38 @@ private:
     int size_{1};
     ParallelBase parallel_;
 
-    auto distribute_and_verify() -> void {
-        std::vector<double> data;
-        if (rank_ == 0) {
-            data.assign(std::begin(TEST_DATA), std::end(TEST_DATA));
-        }
-        parallel_.distribute(data);
-    }
-
-    auto gather_and_verify() -> void {
-        std::vector<double> result;
-        parallel_.gather(result);
-
-        if (rank_ == 0) {
-            ASSERT_EQ(result.size(), DATA_SIZE);
-            for (int i = 0; i < DATA_SIZE; ++i) {
-                EXPECT_DOUBLE_EQ(result[i], TEST_DATA[i]);
-            }
-        }
-    }
-
 protected:
     void SetUp() override {
         MPI_Comm_rank(MPI_COMM_WORLD, &rank_);
         MPI_Comm_size(MPI_COMM_WORLD, &size_);
     }
 
+    auto verify_distribution() -> void {
+        std::vector<double> data;
+        if (rank_ == 0) {
+            data.assign(TEST_DATA.begin(), TEST_DATA.end());
+        }
+        parallel_.distribute(data);
+    }
+
+    auto verify_gathering() -> void {
+        std::vector<double> result;
+        parallel_.gather(result);
+        verify_gathered_data(result);
+    }
+
+    auto verify_gathered_data(const std::vector<double>& result) const -> void {
+        if (rank_ == 0) {
+            ASSERT_EQ(result.size(), DATA_SIZE);
+            for (size_t i = 0; i < DATA_SIZE; ++i) {
+                EXPECT_DOUBLE_EQ(result[i], TEST_DATA[i]);
+            }
+        }
+    }
+
     auto test_distribute_and_gather() -> void {
-        ASSERT_NO_THROW(distribute_and_verify());
-        ASSERT_NO_THROW(gather_and_verify());
+        verify_distribution();
+        verify_gathering();
     }
 
     auto test_invalid_data_size() -> void {
