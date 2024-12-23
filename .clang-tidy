@@ -1,4 +1,5 @@
-Checks: 'bugprone-*,
+Checks: '-*
+        bugprone-*,
         performance-*,
         readability-*,
         modernize-*,
