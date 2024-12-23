@@ -1,10 +1,10 @@
-#include "MPILogger.hpp"
 #include <mpi.h>
 
 #include <iostream>
-#include <vector>
 #include <sstream>
+#include <vector>
 
+#include "MPILogger.hpp"
 #include "ParallelBase.hpp"
 
 auto main(int argc, char* argv[]) -> int {

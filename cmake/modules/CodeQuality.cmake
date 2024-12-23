@@ -25,12 +25,13 @@ function(add_code_quality_targets)
         
         set(CLANG_TIDY_COMMAND
             ${CLANG_TIDY_EXECUTABLE}
+            --config-file=${PROJECT_SOURCE_DIR}/.clang-tidy
+            --header-filter='${PROJECT_SOURCE_DIR}/include/*'
+            --system-headers=0
             ${PROJECT_SOURCE_DIR}/src/*.cpp
             ${PROJECT_SOURCE_DIR}/include/*.hpp
             ${PROJECT_SOURCE_DIR}/tests/*.cpp
-            --config-file=${PROJECT_SOURCE_DIR}/.clang-tidy
             -p=${CMAKE_BINARY_DIR}
-            --header-filter=.*
             --
             -I${PROJECT_SOURCE_DIR}/include
         )

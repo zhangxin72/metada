@@ -1,16 +1,11 @@
-Checks: '-*,
-  modernize-*,
-  performance-*,
-  readability-*,
-  bugprone-*,
-  cppcoreguidelines-*,
-  clang-analyzer-*,
-  -llvm-*,
-  -llvmlibc-*,
-  -zircon-*
-  '
-WarningsAsErrors: ''
-HeaderFilterRegex: '.*'
+Checks: 'bugprone-*,
+        performance-*,
+        readability-*,
+        modernize-*,
+        -modernize-use-trailing-return-type,
+        -readability-magic-numbers'
+WarningsAsErrors: 'bugprone-*,performance-*'
+HeaderFilterRegex: '^${PROJECT_SOURCE_DIR}/include/'
 FormatStyle: 'file'
 CheckOptions:
   - key: readability-identifier-length.MinimumVariableNameLength

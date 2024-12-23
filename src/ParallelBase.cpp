@@ -8,7 +8,7 @@ ParallelBase::ParallelBase(MPI_Comm comm) : m_comm(comm) {
 }
 
 void ParallelBase::distribute(const std::vector<double>& global_data) {
-    int global_size = 0;
+    size_t global_size = 0;
     if (m_rank == 0) {
         global_size = global_data.size();
     }
@@ -28,10 +28,10 @@ void ParallelBase::distribute(const std::vector<double>& global_data) {
 }
 
 void ParallelBase::gather(std::vector<double>& global_result) {
-    const int local_size = m_local_data.size();
+    const size_t local_size = m_local_data.size();
 
     if (m_rank == 0) {
-        global_result.resize(local_size * m_size);
+        global_result.resize(static_cast<size_t>(local_size * m_size));
     }
 
     MPI_Gather(m_local_data.data(), local_size, MPI_DOUBLE, m_rank == 0 ? global_result.data() : nullptr, local_size,
