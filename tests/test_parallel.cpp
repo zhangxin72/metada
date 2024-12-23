@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 #include <mpi.h>
-
+#include <array>
 #include <vector>
 
 #include "ParallelBase.hpp"
 
 namespace {
-constexpr double TEST_DATA[] = {1.0, 2.0, 3.0, 4.0};
-constexpr int DATA_SIZE = 4;
+constexpr std::array<double, 4> TEST_DATA = {1.0, 2.0, 3.0, 4.0};
+constexpr int DATA_SIZE = TEST_DATA.size();
 
 class ParallelTest : public ::testing::Test {
 private:

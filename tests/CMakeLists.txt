@@ -14,7 +14,7 @@ target_compile_definitions(unit_tests PRIVATE USE_MPI)
 
 # Add a custom test that runs with MPI
 add_test(
-    NAME parallel_ests
+    NAME parallel_tests
     COMMAND ${MPIEXEC_EXECUTABLE} 
             ${MPIEXEC_NUMPROC_FLAG} 4 
             ${MPIEXEC_PREFLAGS}
