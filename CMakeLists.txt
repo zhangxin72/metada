@@ -19,7 +19,7 @@ option(BUILD_TESTS "Build tests" OFF)
 
 # Find required packages
 find_package(MPI REQUIRED)
-find_package(Glog REQUIRED)
+find_package(glog REQUIRED)
 
 # Optional packages based on build options
 if(BUILD_TESTS)

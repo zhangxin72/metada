@@ -1,4 +1,4 @@
-Checks: '-*
+Checks: '-*，
         bugprone-*,
         performance-*,
         readability-*,
