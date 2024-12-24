@@ -1,12 +1,14 @@
 #include <gtest/gtest.h>
 #include <mpi.h>
+
 #include <array>
 #include <vector>
 
 #include "ParallelBase.hpp"
 
 namespace {
-constexpr std::array<double, 4> TEST_DATA = {1.0, 2.0, 3.0, 4.0};
+constexpr std::array<double, 4> TEST_DATA = {1.0, 2.0, 3.0,
+                                             4.0};
 constexpr int DATA_SIZE = TEST_DATA.size();
 
 class ParallelTest : public ::testing::Test {
@@ -35,7 +37,8 @@ protected:
         verify_gathered_data(result);
     }
 
-    auto verify_gathered_data(const std::vector<double>& result) const -> void {
+    auto verify_gathered_data(
+        const std::vector<double>& result) const -> void {
         if (rank_ == 0) {
             ASSERT_EQ(result.size(), DATA_SIZE);
             for (size_t i = 0; i < DATA_SIZE; ++i) {
@@ -52,9 +55,11 @@ protected:
     auto test_invalid_data_size() -> void {
         std::vector<double> invalid_data;
         if (rank_ == 0) {
-            invalid_data = {TEST_DATA[0], TEST_DATA[1], TEST_DATA[2]};
+            invalid_data = {TEST_DATA[0], TEST_DATA[1],
+                            TEST_DATA[2]};
         }
-        EXPECT_THROW(parallel_.distribute(invalid_data), std::runtime_error);
+        EXPECT_THROW(parallel_.distribute(invalid_data),
+                     std::runtime_error);
     }
 };
 

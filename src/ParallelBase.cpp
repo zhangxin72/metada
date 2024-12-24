@@ -7,7 +7,8 @@ ParallelBase::ParallelBase(MPI_Comm comm) : m_comm(comm) {
     MPI_Comm_size(comm, &m_size);
 }
 
-void ParallelBase::distribute(const std::vector<double>& global_data) {
+void ParallelBase::distribute(
+    const std::vector<double>& global_data) {
     size_t global_size = 0;
     if (m_rank == 0) {
         global_size = global_data.size();
@@ -18,22 +19,28 @@ void ParallelBase::distribute(const std::vector<double>& global_data) {
     // Calculate local size and resize buffer
     const int local_size = global_size / m_size;
     if (global_size % m_size != 0) {
-        throw std::runtime_error("Data size must be divisible by number of processes");
+        throw std::runtime_error(
+            "Data size must be divisible by number of "
+            "processes");
     }
 
     m_local_data.resize(local_size);
 
-    MPI_Scatter(m_rank == 0 ? global_data.data() : nullptr, local_size, MPI_DOUBLE, m_local_data.data(), local_size,
-                MPI_DOUBLE, 0, m_comm);
+    MPI_Scatter(m_rank == 0 ? global_data.data() : nullptr,
+                local_size, MPI_DOUBLE, m_local_data.data(),
+                local_size, MPI_DOUBLE, 0, m_comm);
 }
 
-void ParallelBase::gather(std::vector<double>& global_result) {
+void ParallelBase::gather(
+    std::vector<double>& global_result) {
     const size_t local_size = m_local_data.size();
 
     if (m_rank == 0) {
-        global_result.resize(static_cast<size_t>(local_size * m_size));
+        global_result.resize(
+            static_cast<size_t>(local_size * m_size));
     }
 
-    MPI_Gather(m_local_data.data(), local_size, MPI_DOUBLE, m_rank == 0 ? global_result.data() : nullptr, local_size,
-               MPI_DOUBLE, 0, m_comm);
+    MPI_Gather(m_local_data.data(), local_size, MPI_DOUBLE,
+               m_rank == 0 ? global_result.data() : nullptr,
+               local_size, MPI_DOUBLE, 0, m_comm);
 }

@@ -9,15 +9,25 @@
 
 class MPILogger {
 public:
-    static void prefixFormatter(std::ostream& stream, const google::LogMessage& message, void* /*data*/) {
-        stream << "[Rank " << rank_ << "] " << google::GetLogSeverityName(message.severity())[0] << std::setw(2)
-               << std::setfill('0') << message.time().month() << std::setw(2) << message.time().day() << ' '
-               << std::setw(2) << message.time().hour() << ':' << std::setw(2) << message.time().min() << ':'
-               << std::setw(2) << message.time().sec() << "." << std::setw(6) << message.time().usec() << ' '
-               << message.basename() << ':' << message.line() << "] ";
+    static void prefixFormatter(
+        std::ostream& stream,
+        const google::LogMessage& message, void* /*data*/) {
+        stream << "[Rank " << rank_ << "] "
+               << google::GetLogSeverityName(
+                      message.severity())[0]
+               << std::setw(2) << std::setfill('0')
+               << message.time().month() << std::setw(2)
+               << message.time().day() << ' ' << std::setw(2)
+               << message.time().hour() << ':' << std::setw(2)
+               << message.time().min() << ':' << std::setw(2)
+               << message.time().sec() << "." << std::setw(6)
+               << message.time().usec() << ' '
+               << message.basename() << ':' << message.line()
+               << "] ";
     }
 
-    static void init(const char* argv0, MPI_Comm comm = MPI_COMM_WORLD) {
+    static void init(const char* argv0,
+                     MPI_Comm comm = MPI_COMM_WORLD) {
         int rank;
         MPI_Comm_rank(comm, &rank);
 

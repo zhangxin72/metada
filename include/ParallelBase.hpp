@@ -10,7 +10,8 @@ public:
     ParallelBase(MPI_Comm comm = MPI_COMM_WORLD);
     virtual ~ParallelBase() = default;
 
-    virtual void distribute(const std::vector<double>& global_data);
+    virtual void distribute(
+        const std::vector<double>& global_data);
     virtual void gather(std::vector<double>& global_result);
 
     [[nodiscard]] auto getRank() const -> int {
