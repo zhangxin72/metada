@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.15)
 project(metada VERSION 1.0 LANGUAGES CXX Fortran)
 
+# Disable In-source build
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+    message(FATAL_ERROR "In-source build is not allowed.")
+endif()
+
 # Set module path
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
 
